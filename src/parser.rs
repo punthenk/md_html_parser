@@ -51,8 +51,7 @@ pub fn parse_line(line: &str) -> String {
 
 pub fn create_html_document(html_lines: Vec<String>) -> String {
     format!(
-        "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n
-            <title>Converted Document</title>\n</head>\n<body>\n{}\n</body>\n</html>",
+        "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Converted Document</title>\n</head>\n<body>\n{}\n</body>\n</html>",
         html_lines.join("\n")
     )
 }

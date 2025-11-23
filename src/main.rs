@@ -8,6 +8,9 @@ mod parser;
 #[command(version, about, long_about = None)]
 struct Args {
     file: String,
+
+    #[arg(short, long)]
+    output_file: Option<String>,
 }
 
 fn get_extention_from_filename(filename: &str) -> Option<&str> {
@@ -38,8 +41,13 @@ fn main() {
         .lines() // Split the string into lines
         .map(|line| parser::parse_line(line)) // calls parse_line on each line
         .collect(); // Collect the lines into a Vec
+    
+    let html_output = parser::create_html_document(html_lines);
 
-    dbg!(html_lines);
+    if let Some(filename) = args.output_file {
+        fs::write(&filename, &html_output)
+            .expect("Can't write to output file");
 
-
+        println!("Successfully written to {}", filename);
+    }
 }
