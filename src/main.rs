@@ -45,6 +45,11 @@ fn main() {
     let html_output = parser::create_html_document(html_lines);
 
     if let Some(filename) = args.output_file {
+        if get_extention_from_filename(&filename) != Some("html") {
+            println!("We can only write in html files");
+            return;
+        }
+        
         fs::write(&filename, &html_output)
             .expect("Can't write to output file");
 
