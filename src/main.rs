@@ -1,5 +1,8 @@
-use clap::Parser;
-use std::fs;
+use clap::{Parser};
+use std::{fs, path::Path};
+use std::ffi::OsStr;
+
+mod parser;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -8,14 +11,30 @@ struct Args {
     file: String,
 }
 
+fn get_extention_from_filename(filename: &str) -> Option<&str> {
+    Path::new(filename)
+        .extension()
+        .and_then(OsStr::to_str)
+}
+
 fn main() {
     let args = Args::parse();
+    let filename = &args.file;
 
-    println!("FILE is = {}", args.file);
+    println!("Reading {}...\n", filename);
 
-    let contents = fs::read_to_string(args.file)
+
+    let contents: String = fs::read_to_string(filename)
         .expect("Can't read the file");
 
-    println!("contents:\n{contents}");
-    
+    println!("File loaded successfully!\n");
+
+    let html_lines: Vec<String> = contents
+        .lines() // Split the string into lines
+        .map(|line| parser::parse_line(line)) // calls parse_line on each line
+        .collect(); // Collect the lines into a Vec
+
+    dbg!(html_lines);
+
+
 }
