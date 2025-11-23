@@ -21,6 +21,12 @@ fn main() {
     let args = Args::parse();
     let filename = &args.file;
 
+    if get_extention_from_filename(filename) != Some("md") {
+        println!("This is not the right file type");
+        println!("Make sure you use a .md file");
+        return;
+    }
+
     println!("Reading {}...\n", filename);
 
 
