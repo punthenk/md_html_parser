@@ -11,6 +11,9 @@ struct Args {
 
     #[arg(short, long)]
     output_file: Option<String>,
+
+    #[arg(short, long)]
+    print_output: bool,
 }
 
 fn get_extention_from_filename(filename: &str) -> Option<&str> {
@@ -35,7 +38,7 @@ fn main() {
     let contents: String = fs::read_to_string(filename)
         .expect("Can't read the file");
 
-    println!("File loaded successfully!\n");
+    println!("File loaded successfully!");
 
     let html_lines: Vec<String> = contents
         .lines() // Split the string into lines
@@ -54,5 +57,9 @@ fn main() {
             .expect("Can't write to output file");
 
         println!("Successfully written to {}", filename);
+    }
+
+    if args.print_output == true {
+        println!("\n{}", html_output);
     }
 }
