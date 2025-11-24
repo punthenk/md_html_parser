@@ -3,43 +3,19 @@ fn parse_to_double_tags(content: &str, tag: &str) -> String {
     return format!("<{}>{}</{}>", tag, content, tag);
 }
 
+fn check_header(line: &str) -> String {
+    let count = line.chars().filter(|c| *c == '#').count();
+    let content = &line[count+1..];
+    let tag = "h".to_owned() + &count.to_string();
+
+    return parse_to_double_tags(&content, &tag);
+}
+
 pub fn parse_line(line: &str) -> String {
     let trimmed = line.trim();
 
-    // Parse to h1
-    if trimmed.starts_with("# ") {
-        let content = &trimmed[2..];
-        return parse_to_double_tags(content, "h1");
-    }
-
-    // Parse to h2
-    if trimmed.starts_with("## ") {
-        let content = &trimmed[3..];
-        return parse_to_double_tags(content, "h2");
-    }
-
-    // Parse to h3
-    if trimmed.starts_with("### ") {
-        let content = &trimmed[4..];
-        return parse_to_double_tags(content, "h3");
-    }
-
-    // Parse to h4
-    if trimmed.starts_with("#### ") {
-        let content = &trimmed[5..];
-        return parse_to_double_tags(content, "h4");
-    }
-
-    // Parse to h5
-    if trimmed.starts_with("##### ") {
-        let content = &trimmed[6..];
-        return parse_to_double_tags(content, "h5");
-    }
-
-    // Parse to h6
-    if trimmed.starts_with("###### ") {
-        let content = &trimmed[7..];
-        return parse_to_double_tags(content, "h6");
+    if trimmed.starts_with("#") {
+        return check_header(trimmed);
     }
 
     if trimmed.is_empty() {
