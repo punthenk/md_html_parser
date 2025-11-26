@@ -37,12 +37,32 @@ fn check_italic_or_bold(line: &str) -> String {
                 i += 1;
             }
             continue;
+        } 
+
+        if i + 1 < chars.len() && chars[i] == '*' {
+            i += 1;
+            let start = i;
+
+            while i < chars.len() {
+                if chars[i] == '*' {
+                    let end = i;
+                    let content: String = chars[start..end].iter().collect();
+
+                    out.push_str("<i>");
+                    out.push_str(&content);
+                    out.push_str("</i>");
+
+                    i += 1;
+                    break;
+                }
+                i += 1;
+            }
+            continue;
         }
         out.push(chars[i]);
         i += 1;
     }
     return parse_to_double_tags(&out, "p");
-
 }
 
 pub fn parse_line(line: &str) -> String {
