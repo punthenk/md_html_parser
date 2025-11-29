@@ -3,6 +3,7 @@ use std::{fs, path::Path};
 use std::ffi::OsStr;
 
 mod parser;
+mod parse_line;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -44,6 +45,8 @@ fn main() {
         .lines() // Split the string into lines
         .map(|line| parser::parse_line(line)) // calls parse_line on each line
         .collect(); // Collect the lines into a Vec
+
+    // dbg!(&contents.lines());
     
     let html_output = parser::create_html_document(html_lines);
 
