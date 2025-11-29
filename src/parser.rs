@@ -37,7 +37,7 @@ fn check_italic_or_bold(line: &str) -> String {
                 i += 1;
             }
             continue;
-        } 
+        }
 
         if i + 1 < chars.len() && chars[i] == '*' {
             i += 1;
@@ -65,6 +65,19 @@ fn check_italic_or_bold(line: &str) -> String {
     return parse_to_double_tags(&out, "p");
 }
 
+fn check_unordered_list(line: &str) -> String {
+    let mut out: String = String::new();
+    out.push_str("<ul>\n");
+
+    let content = &line[2..];
+    let new_content = parse_to_double_tags(content, "li");
+
+    out.push_str(&new_content);
+    out.push_str("\n</ul>");
+
+    return out;
+}
+
 pub fn parse_line(line: &str) -> String {
     let trimmed = line.trim();
 
@@ -74,6 +87,10 @@ pub fn parse_line(line: &str) -> String {
 
     if trimmed.contains('*') {
         return check_italic_or_bold(trimmed);
+    }
+
+    if trimmed.starts_with('-') {
+        return check_unordered_list(trimmed);
     }
 
     if trimmed.is_empty() {
